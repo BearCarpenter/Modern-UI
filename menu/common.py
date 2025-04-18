@@ -29,7 +29,7 @@
 
 import sys
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 Qt = QtCore.Qt
 
 
@@ -65,7 +65,7 @@ def createButton(icon=None, title='', handler=None, shortcut=None, statusTip=Non
     # size
     btn.setIconSize(QtCore.QSize(24, 24))
     sp = btn.sizePolicy()
-    sp.setHorizontalPolicy(sp.Expanding)
+    sp.setHorizontalPolicy(QtWidgets.QSizePolicy.Expanding)
     btn.setSizePolicy(sp)
 
     # icon

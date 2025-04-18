@@ -22,7 +22,7 @@
 # ***********************************************************************
 
 import FreeCADGui, FreeCAD
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 import os
 
 class Preferences(QtWidgets.QDialog):
@@ -31,7 +31,7 @@ class Preferences(QtWidgets.QDialog):
     """
     actions = {}
     mw = FreeCADGui.getMainWindow()
-    group = QtWidgets.QActionGroup(mw)
+    group = QtGui.QActionGroup(mw)
     p = FreeCAD.ParamGet("User parameter:BaseApp/ModernUI")
     path = os.path.dirname(__file__) + "/Resources/icons/"
 
@@ -246,17 +246,18 @@ class Preferences(QtWidgets.QDialog):
         Create workbench actions.
         """
         wbList = FreeCADGui.listWorkbenches()
-        for i in wbList:
-            if i not in self.actions:
-                action = QtWidgets.QAction(self.group)
+        for name, wb in wbList.items():
+            if name not in self.actions:
+                action = QtGui.QAction(wb.MenuText, self.group)
                 action.setCheckable(True)
-                action.setText(wbList[i].MenuText)
-                action.setData(i)
+                action.setData(name)
                 try:
-                    action.setIcon(self.workbenchIcon(wbList[i].Icon))
-                except:
+                    action.setIcon(self.workbenchIcon(wb.Icon))
+                except Exception:
                     action.setIcon(QtGui.QIcon(":/icons/freecad"))
-                self.actions[i] = action
+                self.group.addAction(action)
+                self.actions[name] = action
+
 
     def defaultWorkbenches(self):
         """
@@ -328,7 +329,7 @@ class Preferences(QtWidgets.QDialog):
             for index in range(selector.count()):
                 position.append(selector.item(index).data(32))
             self.p.SetString("Position", ",".join(position))
-            self.onItemChanged(selector)
+            self.onItemChanged()
 
     def onDownClicked(self):
         """
@@ -346,7 +347,7 @@ class Preferences(QtWidgets.QDialog):
             for index in range(selector.count()):
                 position.append(selector.item(index).data(32))
             self.p.SetString("Position", ",".join(position))
-            self.onItemChanged(selector)
+            self.onItemChanged()
 
     def onStyleChanged(self):
         """

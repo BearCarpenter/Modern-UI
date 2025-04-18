@@ -28,7 +28,9 @@
 
 import sys
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtGui import QPalette
+
 Qt = QtCore.Qt
 
 from menu.common import createButton, createHorzLine
@@ -60,7 +62,7 @@ class QFileMenu(QtWidgets.QMenu):
         # Create a button widget
         btnWidget = QtWidgets.QFrame()
         sp = btnWidget.sizePolicy()
-        sp.setVerticalPolicy(sp.Expanding)
+        sp.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)
         btnWidget.setSizePolicy(sp)
         btnWidget.setMinimumHeight(minHeight)
         self._btnLayout = QtWidgets.QVBoxLayout()
@@ -77,7 +79,7 @@ class QFileMenu(QtWidgets.QMenu):
         self._dynContentStack = QtWidgets.QStackedWidget()
         self._dynContentStack.setMinimumWidth(256)
         sp = self._dynContentStack.sizePolicy()
-        sp.setVerticalPolicy(sp.Expanding)
+        sp.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)
         self._dynContentStack.setSizePolicy(sp)
         self._dynContentStack.setMinimumHeight(minHeight)
 
@@ -108,7 +110,7 @@ class QFileMenu(QtWidgets.QMenu):
         # Change the button widget bg color
         btnWidget.setAutoFillBackground(True)
         p = btnWidget.palette()
-        p.setColor(p.Window, p.color(p.Base))
+        p.setColor(QPalette.Window, p.color(QPalette.Base))
         btnWidget.setPalette(p)
 
         # Set the frame styles
@@ -198,7 +200,7 @@ class QFileMenu(QtWidgets.QMenu):
             btn.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
             btn.setShortcut(str(idx))
             sp = btn.sizePolicy()
-            sp.setHorizontalPolicy(sp.Expanding)
+            sp.setHorizontalPolicy(QtWidgets.QSizePolicy.Expanding)
             btn.setSizePolicy(sp)
             btn.clicked.connect(lambda: self._handleRecentFileClick(pth))
 
@@ -234,13 +236,13 @@ class QFileMenu(QtWidgets.QMenu):
         RFLw = QtWidgets.QWidget()
         RFLw.setLayout(RFL)
         sp = RFLw.sizePolicy()
-        sp.setVerticalPolicy(sp.Expanding)
+        sp.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)
         RFLw.setSizePolicy(sp)
         
         # Make a label
         label = QtWidgets.QLabel(self._recentFilesText)
         f = label.font()
-        f.setWeight(f.Bold)
+        f.setBold(True)
         label.setFont(f)
         label.setEnabled(False)
         self._recentFilesLabel = label
@@ -259,7 +261,11 @@ class QFileMenu(QtWidgets.QMenu):
         w.setLayout(L)
         
         # Remove the old widget
-        if oldWidget != 0: self._dynContentStack.removeWidget(oldWidget)
+        if self._dynContentStack.count() > 0:
+            oldWidget = self._dynContentStack.widget(0)
+            if oldWidget is not None:
+                self._dynContentStack.removeWidget(oldWidget)
+                oldWidget.deleteLater()
         
         # Set the new one in its place
         self._dynContentStack.insertWidget(0, w)
@@ -300,7 +306,7 @@ class QFileMenu(QtWidgets.QMenu):
         arrowBtn = QtWidgets.QToolButton()
         arrowBtn.setAutoRaise(True)
         sp = arrowBtn.sizePolicy()
-        sp.setVerticalPolicy(sp.Expanding)
+        sp.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)
         arrowBtn.setSizePolicy(sp)
         arrowBtn.setArrowType(Qt.RightArrow)
         arrowBtn.setCheckable(True)
@@ -393,13 +399,13 @@ class QFileMenuPanel(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
 
         sp = self.sizePolicy()
-        sp.setVerticalPolicy(sp.Expanding)
-        sp.setHorizontalPolicy(sp.Expanding)
+        sp.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)
+        sp.setHorizontalPolicy(QtWidgets.QSizePolicy.Expanding)
         self.setSizePolicy(sp)
 
         self._titleLabel = QtWidgets.QLabel(title)
         f = self._titleLabel.font()
-        f.setWeight(f.Bold)
+        f.setBold(True)
         self._titleLabel.setFont(f)
         self._titleLabel.setEnabled(False)
 

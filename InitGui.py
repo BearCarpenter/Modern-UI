@@ -23,6 +23,27 @@
 import FreeCADGui
 import FCBinding
 
+
+DEBUG = False
+
+if DEBUG:
+    import os
+    os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
+    import sys
+    freecadpython = sys.executable.replace('freecad', 'python')
+    App.Console.PrintMessage('Using ' + freecadpython +'\n')
+    try:
+        import debugpy
+    except ModuleNotFoundError:
+        App.Console.PrintMessage('Install debugpy by: ' + freecadpython + ' -m pip install --upgrade debugpy\n')
+    debugpy.configure(python=freecadpython)
+    if not debugpy.is_client_connected():
+        debugpy.listen(5678)
+
+    App.Console.PrintMessage("Waiting for debugger attach\n")
+    debugpy.wait_for_client()
+    debugpy.breakpoint()
+
 # When WB activated run Modern UI
 mw = FreeCADGui.getMainWindow()
 mw.workbenchActivated.connect(FCBinding.run)

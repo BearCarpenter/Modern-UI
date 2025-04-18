@@ -24,8 +24,8 @@ import FreeCAD, FreeCADGui
 from menu.ModernMenu import QModernMenu
 from menu.FileMenu import QFileMenu, QFileMenuPanel
 from menu.RecentFilesManager import QRecentFilesManager
-from PySide2 import QtCore, QtGui, QtWidgets
-from Preferences import Preferences
+from PySide6 import QtCore, QtGui, QtWidgets
+from PreferencesModernUI import Preferences
 from dock import ModernDock
 import webbrowser
 import os

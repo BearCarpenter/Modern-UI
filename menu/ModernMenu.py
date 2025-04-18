@@ -22,7 +22,7 @@
 
 
 # Contains classes related to the modern menu itself
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from menu.common import createVertLine
 from menu.FileMenu import QFileMenu
 import sys
@@ -74,7 +74,7 @@ class QModernMenu(QtWidgets.QWidget):
         self._helpBtn = QtWidgets.QToolButton()
         self._helpBtn.setAutoRaise(True)
         self._helpBtn.setVisible(False)
-        self._helpBtn.setPopupMode(self._helpBtn.InstantPopup)
+        self._helpBtn.setPopupMode(QtWidgets.QToolButton.InstantPopup)
 
         # Set up a tab bar widget with buttons on the right edge
         tbLayout = QtWidgets.QGridLayout()
@@ -468,7 +468,7 @@ class QModernSection(QtWidgets.QWidget):
         btn.setIconSize(QtCore.QSize(s, s))
         if full:
             sp = btn.sizePolicy()
-            sp.setVerticalPolicy(sp.Expanding)
+            sp.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)
             btn.setSizePolicy(sp)
 
         # icon

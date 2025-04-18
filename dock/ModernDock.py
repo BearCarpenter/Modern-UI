@@ -26,7 +26,7 @@ When the mouse moves towards them, they become visible.
 """
 
 import FreeCADGui,FreeCAD
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from menu.common import createButton
 import os
 
@@ -134,7 +134,7 @@ class ModernDock(QtCore.QObject):
     def eventFilter(self, source, event):
         area = mw.dockWidgetArea(self.target)
 
-        if source is mw and event.type() is event.ChildAdded:
+        if source is mw and event.type() is QtCore.QEvent.Type.ChildAdded:
             if isinstance(event.child(), QtWidgets.QDockWidget):
                 for dockWid in mw.findChildren(QtWidgets.QDockWidget):
                     if dockWid.windowTitle().replace('&', '') == "Modern Menu":continue
@@ -143,7 +143,7 @@ class ModernDock(QtCore.QObject):
             return True
 
         elif source is self.target:
-            if (event.type() is event.Enter) or \
+            if (event.type() is QtCore.QEvent.Type.Enter) or \
                 (self.target.isFloating() and self.docked):
                 for dockWid in mw.findChildren(QtWidgets.QDockWidget):
                     if dockWid.windowTitle().replace('&', '') == "Modern Menu":continue
@@ -152,7 +152,7 @@ class ModernDock(QtCore.QObject):
                             self.openDock(dockWid)
                 return True
 
-            elif event.type() is event.Leave:
+            elif event.type() is QtCore.QEvent.Type.Leave:
                 for dockWid in mw.findChildren(QtWidgets.QDockWidget):
                     if dockWid.windowTitle().replace('&', '') == "Modern Menu": continue
                     if dockWid.isVisible and (mw.dockWidgetArea(dockWid) is area):

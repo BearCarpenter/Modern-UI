@@ -30,7 +30,7 @@ Alpha
 * Paste this code in to macro.
 
 ```
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 mw = FreeCADGui.getMainWindow()
 mw.menuBar().show()
 
